@@ -1,4 +1,5 @@
 from progress.bar import Bar
+#Pour utiliser la barre de progression il faut d'abord faire "pip install progress"
 
 #Calcule la distance de hamming entre 2 string
 def dist_hamming(m1,m2):
