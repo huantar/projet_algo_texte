@@ -17,16 +17,19 @@ def distance_pages (index):
     #Compteur page trop similaires
     cmpt = 0
     #notre bar de progression
-    bar = Bar('Analyse', max=len(index))
-    for i in range(int(len(index))-1):
+    bar = Bar('Analyse des pages', max=(len(index)))
+    for i in range(int(len(index))):
     # for i in range(0,50):
         bar.next()
-        if dist_hamming(index[i][0], index[i+1][0]) < 50 :
-            #print("Pour " + str(i) + " et " + str(i+1) + " on a distance de H : " + str(dist_hamming(index[i][1], index[i+1][1])))
-            if dist_hamming(index[i][1], index[i+1][1]) < 20 :
-                cmpt += 2
-                list_same.append(index[i])
-                list_same.append(index[i+1])
+        for j in range(i+1, int(len(index))):
+            if dist_hamming(index[i][0], index[i+1][0]) < 50 :
+                #print("Pour " + str(i) + " et " + str(i+1) + " on a distance de H : " + str(dist_hamming(index[i][1], index[i+1][1])))
+                if dist_hamming(index[i][1], index[i+1][1]) < 20 :
+                    cmpt += 1
+                    list_same.append(index[i])
+                    list_same.append(index[i+1])
+                    # on supprime les autres pages qui ressemblent et ainsi on garde que la premiere apparue
+                    index.remove(index[i+1])
     bar.finish()
-    print("On a un ratio :" + str(cmpt) +"/"+ str(i+1))
-    return list_same
+    print("On a un ratio :" + str(cmpt) +"/"+ str(i))
+    return index, list_same
