@@ -3,20 +3,7 @@ import re
 from bs4 import BeautifulSoup
 from progress.bar import Bar
 from distancePage import *
-#Pour utiliser la barre de progression il faut d'abord faire "pip install progress"
-
-#supprime balise html, \t et \n
-# marche pas mdr je le laisse pour l'histoire
-def cleanhtml(raw_html):
-    raw_html = raw_html.replace("\\t",'')
-    raw_html = raw_html.replace("\\n ",'')
-    raw_html = raw_html.replace("; ",' ')
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, '', raw_html)
-    # cleantext = cleantext.replace("\\t",'')
-    # cleantext = cleantext.replace("\\n ",'')
-    # cleantext = cleantext.replace("; ",' ')
-    return cleantext
+import time
 
 class Data :
 
@@ -25,15 +12,16 @@ class Data :
 
     # On initialise la classe avec un index qu'on "nettoie"
     def __init__(self, repertoire):
+        start = time.time()
         self.loadIndex(repertoire)
         print("on a un index de taille :" + str(len(self.index)))
         self.distance_pages()
         self.clean_index()
+        print("temps prit pour l'initialisation :" + str((time.time()-start)/60) + " min \n")
 
     #charge données dans index
     def loadIndex(self, repertoire):
         repertoireFichiers = os.listdir(repertoire)
-
         for nomFichier in repertoireFichiers:
             cheminFichier=repertoire+"/"+nomFichier
             fichier=open(cheminFichier,"rb")
@@ -49,13 +37,17 @@ class Data :
         list_same = []
         #Compteur page trop similaires
         cmpt = 0
+        # on definit la valeur max pour hamming qu'on accepte
+        # En francais un mot fait 5 lettres en moyenne,
+        # donc pour comparer les ~20 premiers mots on fait un max de 100
+        maxh = 100
         #notre bar de progression
         bar = Bar('Analyse des pages', max=(len(self.index)))
         for i in range(0,len(self.index)):
             bar.next()
             for j in range(i+1,len(self.index)):
-                if (dist_hamming(self.index[i][0], self.index[j][0]) < 20) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
-                    if (dist_hamming(self.index[i][1], self.index[j][1]) < 10):
+                if (dist_hamming(self.index[i][0], self.index[j][0]) < 15) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
+                    if (dist_hamming(self.index[i][1], self.index[j][1]) < maxh+5):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
                         if self.index[j][2] == 0 :
