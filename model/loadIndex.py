@@ -9,6 +9,7 @@ class Data :
 
     index = []
     list_same = []
+    word_same = []
 
     # On initialise la classe avec un index qu'on "nettoie"
     def __init__(self, repertoire):
@@ -22,13 +23,16 @@ class Data :
     #charge données dans index
     def loadIndex(self, repertoire):
         repertoireFichiers = os.listdir(repertoire)
+        bar = Bar('Importation des données : ', max=(len(repertoireFichiers)))
         for nomFichier in repertoireFichiers:
-            cheminFichier=repertoire+"/"+nomFichier
-            fichier=open(cheminFichier,"rb")
-            contenu=BeautifulSoup(fichier.read(), "html.parser").get_text()
+            bar.next()
+            cheminFichier = repertoire + "/" + nomFichier
+            fichier = open(cheminFichier,"rb")
+            contenu = BeautifulSoup(fichier.read(), "html.parser").get_text()
+            contenu = ' '.join(contenu.split())
             self.index.append([nomFichier,contenu, 0])
             fichier.close()
-
+        bar.finish()
 
     #Parcour l'index et calcule la distance de hamming de 2 voisins
     #Si la distance de hamming est trop petite on le met dans une liste a part
@@ -42,7 +46,7 @@ class Data :
         # donc pour comparer les ~20 premiers mots on fait un max de 100
         maxh = 100
         #notre bar de progression
-        bar = Bar('Analyse des pages', max=(len(self.index)))
+        bar = Bar('Analyse des pages :', max=(len(self.index)))
         for i in range(0,len(self.index)):
             bar.next()
             for j in range(i+1,len(self.index)):
@@ -67,7 +71,17 @@ class Data :
     # Supprime les pages trop similaires et n'en garde qu'une
     #créer une liste des pages trop similaires
     def clean_index(self):
-        print("Avant suppression on a : " + str(len(self.index)) + " pages dans index")
+        print("Avant suppression on avait : " + str(len(self.index)) + " pages dans l'index")
         for page in self.list_same :
                 self.index.remove(page)
-        print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans index")
+        print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans l'index")
+
+    def find_word(self, word):
+        print("on cherche le mot " + str(word) + "\n")
+        for page in self.index :
+            txt = page[1].split()
+            wt = len(word)
+            for mot in txt :
+                if dist_hamming(mot,word) < wt/2 and wt-1 <= len(mot)  <= wt+1 :
+                    self.word_same.append(mot)
+        print("voici la liste des mots trouver : " + str(self.word_same))
