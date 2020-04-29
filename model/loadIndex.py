@@ -6,6 +6,7 @@ from distancePage import *
 #Pour utiliser la barre de progression il faut d'abord faire "pip install progress"
 
 #supprime balise html, \t et \n
+# marche pas mdr je le laisse pour l'histoire
 def cleanhtml(raw_html):
     raw_html = raw_html.replace("\\t",'')
     raw_html = raw_html.replace("\\n ",'')
@@ -43,23 +44,18 @@ class Data :
         cmpt = 0
         #notre bar de progression
         bar = Bar('Analyse des pages', max=(len(self.index)))
-
         for i in range(0,len(self.index)):
-        # for i in range(0,50):
             bar.next()
             for j in range(i+1,len(self.index)):
                 if (dist_hamming(self.index[i][0], self.index[j][0]) < 20) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
-                    #print("Pour " + str(i) + " et " + str(i+1) + " on a distance de H : " + str(dist_hamming(index[i][1], index[i+1][1])))
                     if (dist_hamming(self.index[i][1], self.index[j][1]) < 10):
                         cmpt += 1
-                        self.list_same.append(self.index[i])
-                        self.list_same.append(self.index[j])
+                        # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
+                        if self.index[j][2] == 0 :
+                            self.list_same.append(self.index[j])
                         #on marque les page qui ressemblent a la notre
                         self.index[j][2] += 1
-                        self.index[i][2] += 1
-
         bar.finish()
-        print("On supprime : " + str(cmpt) + " page similaires")
 
     def show_no_same(self):
         cmpt = 0
@@ -67,3 +63,12 @@ class Data :
             if self.index[i][2] == 0:
                 cmpt += 1
         print(cmpt)
+
+    # Supprime les pages trop similaires et n'en garde qu'une
+    #créer une liste des pages trop similaires
+    def clean_index(self):
+        print("Avant suppression on a : " + str(len(self.index)) + " pages dans index")
+        for page in self.list_same :
+                self.index.remove(page)
+
+        print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans index")

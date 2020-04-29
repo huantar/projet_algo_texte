@@ -13,3 +13,6 @@ print("on a un index de taille :" + str(len(data.index)))
 data.distance_pages()
 print("on a un index de taille :" + str(len(data.index)))
 data.show_no_same()
+
+data.clean_index()
+data.show_no_same()
