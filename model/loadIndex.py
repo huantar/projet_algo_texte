@@ -23,8 +23,15 @@ class Data :
     index = []
     list_same = []
 
-    #charge données dans index
+    # On initialise la classe avec un index qu'on "nettoie"
     def __init__(self, repertoire):
+        self.loadIndex(repertoire)
+        print("on a un index de taille :" + str(len(self.index)))
+        self.distance_pages()
+        self.clean_index()
+
+    #charge données dans index
+    def loadIndex(self, repertoire):
         repertoireFichiers = os.listdir(repertoire)
 
         for nomFichier in repertoireFichiers:
@@ -57,6 +64,7 @@ class Data :
                         self.index[j][2] += 1
         bar.finish()
 
+    #Compte les pages non-simialires (pour test suppression)
     def show_no_same(self):
         cmpt = 0
         for i in range(len(self.index)):
@@ -70,5 +78,4 @@ class Data :
         print("Avant suppression on a : " + str(len(self.index)) + " pages dans index")
         for page in self.list_same :
                 self.index.remove(page)
-
         print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans index")
