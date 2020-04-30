@@ -2,7 +2,7 @@ import os
 import re
 from bs4 import BeautifulSoup
 from progress.bar import Bar
-from distancePage import *
+from model.distancePage import *
 import time
 
 class Data :

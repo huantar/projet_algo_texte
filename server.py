@@ -1,29 +1,28 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from os import curdir, sep
 import re
+from model.loadIndex import *
 
 class Serv(BaseHTTPRequestHandler):
 
+    # on initialise le serveur en creant un index
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
+    data = Data(repertoire)
+
+    print(data.index[1][0])
+
+    #function qui gere les requetes GET
     def do_GET(self):
-
-        if self.path == '/' :
+        #Redirection des pages selon l'url
+        if self.path == '/':
             self.path = "/view/A.html"
-
         if "?" in self.path:
             pattern = re.compile("(/\?search=?\+*$)")
             if pattern.match(self.path):
                 self.path= "/view/A.html"
             else:
                 self.path = "/view/B.html"
-            # try:
-            #     file_to_open = open(self.path[1:], 'rb+').read()
-            #     self.send_response(200)
-            # except:
-            #     file_to_open = "File not found"
-            #     self.send_response(404)
-            # self.end_headers()
-            # self.wfile.write(file_to_open)
-            # # self.wfile.write(file_to_open)
+
         try:
             #Check the file extension required and
             #set the right mime type
