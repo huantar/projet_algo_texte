@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from os import curdir, sep
+import re
 
 class Serv(BaseHTTPRequestHandler):
 
@@ -9,7 +10,11 @@ class Serv(BaseHTTPRequestHandler):
             self.path = "/view/A.html"
 
         if "?" in self.path:
-            self.path = "/view/B.html"
+            pattern = re.compile("(/\?search=?\+*$)")
+            if pattern.match(self.path):
+                self.path= "/view/A.html"
+            else:
+                self.path = "/view/B.html"
             # try:
             #     file_to_open = open(self.path[1:], 'rb+').read()
             #     self.send_response(200)
