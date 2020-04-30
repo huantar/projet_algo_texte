@@ -4,8 +4,12 @@ from os import curdir, sep
 class Serv(BaseHTTPRequestHandler):
 
     def do_GET(self):
+
         if self.path == '/' :
             self.path = "/view/A.html"
+
+        if "?" in self.path:
+            self.path = "/view/B.html"
             # try:
             #     file_to_open = open(self.path[1:], 'rb+').read()
             #     self.send_response(200)
