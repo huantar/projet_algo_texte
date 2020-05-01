@@ -44,3 +44,29 @@ def calculTFIDF(tf,idf):
         tfidfValeur=tf[i][1]*idf[i][1]
         TFIDF.append([tf[i][0],tfidfValeur])
     return TFIDF
+
+#prend en paramètre l'index
+#retourne le avgdl(longueur moyenne des documents)
+def calculAVGDL(listeDocuments):
+    sommeMots=0
+    nombreDocuments=len(listeDocuments)
+    for i in range(len(listeDocuments)):
+        sommeMots=sommeMots+len(listeDocuments[i][1])
+    avgdl=sommeMots/nombreDocuments
+    return avgdl
+
+#prend en paramètre le contenu string d'une page et l'index
+#retourne le score bm-25 de cette page
+def calculScore25(document,listeDocuments):
+    score25=0
+    idf=calculIDF(document,listeDocuments)
+    avgdl=calculAVGDL(listeDocuments)
+    k=2.0
+    b=0.75
+    document=document.split()
+    for i in range(len(idf)):
+        dividende=idf[i][1]*(document.count(idf[i][0])*(k+1))
+        diviseur=document.count(idf[i][0])+k*((1-b)+b*(len(document)/avgdl))
+        score25=score25+(dividende/diviseur)
+        print(score25)
+    return score25    
