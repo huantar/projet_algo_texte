@@ -1,11 +1,10 @@
-Class Index_reverse :
+class Index_reverse :
     """ Répertorie les mots de l'index selon les pages où ils se trouvent et leur occurence dans ces pages.
         Cette classe à pour paramètres :
         - reverse (qui contient l'occurences des mots par pages)
         """
-    
+
     #constructeur de la classe index reserve
-    
     def __init__(self,index):
         #variable qui contiendra tous les mots des contenu des pages(sans doublons)
         mots=[]
@@ -22,5 +21,4 @@ Class Index_reverse :
             for j in range(len(index)):
                 #si le mots est dans la page on ajoute [nbrOccurence,url] à reverse
                 if index[j][1].count(mots[i])>0:
-                    reverse[i].append([index[j][1].count(mots[i]),index[j][0]])
-
+                    self.reverse[i].append([index[j][1].count(mots[i]),index[j][0]])
