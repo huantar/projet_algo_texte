@@ -10,3 +10,8 @@
 
 - `pip install progress`
 - `pip install bs4`
+
+# Lancement
+
+- Pour lancer le serveur on fait `python server.py`
+- Ensuite sur navigateur web, on peut acceder au site sur `localhost:8080`
