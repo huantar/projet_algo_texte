@@ -51,7 +51,7 @@ class Index_reverse :
             tailleMots=tailleMots-1
             for i in range(tailleMotsPar2):
                 self.reverse.append([self.mots[i],[]])
-                self.reverse.append([self.mots[tailleMots-i],[]])
+                self.reverse.append([self.mots[taille-i],[]])
                 #taille index pair
                 if len(index)%2==0:
                     taillePar2=round(taillePar2)
@@ -67,65 +67,27 @@ class Index_reverse :
                             self.reverse[tailleMots-i][1].append([index[taille-j][0],index[taille-j][1]])
                             #supprimer le mots de la page
                             #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
-                #taille index impaire
-                else:
-                    partieEntiereIndex=int(taillePar2)
-                    taillePar2=round(taillePar2)
-                    if partieEntiereIndex%2==0:
-                        taillePar2=taillePar2+1
-                    for j in range(taillePar2):
-                        if self.mots[i] in index[j][1]:
-                            #on ajoute [url,page] à reverse
-                            self.reverse[i][1].append([index[j][0],index[j][1]])
-                            #supprimer le mots de la page
-                            #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
-                        if self.mots[tailleMots-i] in index[taille-j][1] and j!=0:
-                            #on ajoute [url,page] à reverse
-                            self.reverse[tailleMots-i][1].append([index[taille-j][0],index[taille-j][1]])
-                            #supprimer le mots de la page
-                            #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))                    
         #taille mots impair
         else:
-            partieEntiereMots=int(tailleMotsPar2)
+            partieEntiere=int(tailleMotsPar2)
             tailleMotsPar2=round(tailleMotsPar2)
-            if partieEntiereMots%2==0:
+            if partieEntiere%2==0:
                 tailleMotsPar2=tailleMotsPar2+1
             for i in range(tailleMotsPar2):
                 self.reverse.append([self.mots[i],[]])
                 if i!=0:
                     self.reverse.append([self.mots[taille-i],[]])
-                #taille index impair
-                if len(index)%2==0:
-                    taillePar2=round(taillePar2)
-                    taille=taille-1
-                    for j in range(taillePar2):
-                        if self.mots[i] in index[j][1]:
-                            #on ajoute [url,page] à reverse
-                            self.reverse[i][1].append([index[j][0],index[j][1]])
-                            #supprimer le mots de la page
-                            #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
-                        if self.mots[tailleMots-i] in index[taille-j][1]:
-                            #on ajoute [url,page] à reverse
-                            self.reverse[tailleMots-i][1].append([index[taille-j][0],index[taille-j][1]])
-                            #supprimer le mots de la page
-                            #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
-                #taille index impaire
-                else:
-                    partieEntiereIndex=int(taillePar2)
-                    taillePar2=round(taillePar2)
-                    if partieEntiereIndex%2==0:
-                        taillePar2=taillePar2+1
-                    for j in range(taillePar2):
-                        if self.mots[i] in index[j][1]:
-                            #on ajoute [url,page] à reverse
-                            self.reverse[i][1].append([index[j][0],index[j][1]])
-                            #supprimer le mots de la page
-                            #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
-                        if self.mots[tailleMots-i] in index[taille-j][1] and j!=0 and i!=0:
-                            #on ajoute [url,page] à reverse
-                            self.reverse[tailleMots-i][1].append([index[taille-j][0],index[taille-j][1]])
-                            #supprimer le mots de la page
-                            #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
+                for j in range(len(index)):
+                    if self.mots[i] in index[j][1]:
+                        #on ajoute [url,page] à reverse
+                        self.reverse[i][1].append([index[j][0],index[j][1]])
+                        #supprimer le mots de la page
+                        #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
+                    if self.mots[tailleMots-i] in index[j][1] and i!=0:
+                        #on ajoute [url,page] à reverse
+                        self.reverse[tailleMots-i][1].append([index[j][0],index[j][1]])
+                        #supprimer le mots de la page
+                        #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
     
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
     def recherche(requete):
