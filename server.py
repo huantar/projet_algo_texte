@@ -1,14 +1,16 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from os import curdir, sep
 import re
+import shutil
 from model.loadIndex import *
+from model.Index_reverse import *
 
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
+    repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
-
+    index_inverse = Index_reverse(data.index)
     print(data.index[1][0])
 
     #function qui gere les requetes GET
@@ -21,6 +23,22 @@ class Serv(BaseHTTPRequestHandler):
             if pattern.match(self.path):
                 self.path= "/view/A.html"
             else:
+                motRechercher = self.path[9::]
+                print("Le mot recherché est : \"", motRechercher, "\"")
+                meilleur = self.index_inverse.recherche(motRechercher)
+                print ("Il y a", len(meilleur), "pages pour cette recherche")
+
+                shutil.copy("View/Bbis.html", "View/B.html")
+
+                file = open("View/B.html","a")
+                message=""
+                for j in meilleur:
+                    message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+
+                message = message + '<button type="button" name="more" class="btn btn-primary mt-3 offset-2">Charger plus</button></div></div></body></html>'
+                file.write(message)
+                file.close()
+
                 self.path = "/view/B.html"
 
         try:

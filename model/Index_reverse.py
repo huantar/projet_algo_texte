@@ -1,4 +1,4 @@
-from calculScore import *
+from model.calculScore import *
 
 class Index_reverse :
     """ Répertorie les mots de l'index selon les pages où ils se trouvent et leur occurence dans ces pages.
@@ -26,9 +26,9 @@ class Index_reverse :
                     self.reverse[i][1].append([index[j][0],index[j][1]])
                     #supprimer le mots de la page
                     #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
-    
+
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
-    def recherche(requete):
+    def recherche(self, requete):
         requete=requete.split()
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
@@ -46,7 +46,7 @@ class Index_reverse :
         bestPages=[]
         #si on a plus de 10 pages
         if len(score)>10:
-            #on prend les 10 meilleurs pages 
+            #on prend les 10 meilleurs pages
             score=score[0:10]
             for j in range(len(score)):
                 bestPages.append(score[j][1])
@@ -54,4 +54,3 @@ class Index_reverse :
             for j in range(len(score)):
                 bestPages.append(score[j][1])
         return bestPages
-        
