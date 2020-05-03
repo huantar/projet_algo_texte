@@ -24,8 +24,8 @@ class Index_reverse :
                     #on ajoute [url,page] à reverse
                     self.reverse[j][1].append([index[i][0],index[i][1]])
                     #supprimer le mots de la page
-                    index[i][1] = list(filter(lambda x: x != mots[j], index[i][1]))
-    
+                    index[i][1] = list(filter(lambda x: x != self.mots[j], index[i][1]))
+
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
     def recherche(requete):
         requete=requete.split()
@@ -45,7 +45,7 @@ class Index_reverse :
         bestPages=[]
         #si on a plus de 10 pages
         if len(score)>10:
-            #on prend les 10 meilleurs pages 
+            #on prend les 10 meilleurs pages
             score=score[0:10]
             for j in range(len(score)):
                 bestPages.append(score[j][1])
