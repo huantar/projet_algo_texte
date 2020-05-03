@@ -41,16 +41,20 @@ class Index_reverse :
                         print("page déjà en traitement")
                     else:
                         reverseContenu.extend(self.reverse[indice][1])
-        #tableau des scores avec leurs urls triées
-        score=calculScore25(requete,reverseContenu)
         bestPages=[]
-        #si on a plus de 10 pages
-        if len(score)>10:
-            #on prend les 10 meilleurs pages
-            score=score[0:10]
-            for j in range(len(score)):
-                bestPages.append(score[j][1])
+        if len(reverseContenu)==0:
+            return bestPages
         else:
-            for j in range(len(score)):
-                bestPages.append(score[j][1])
-        return bestPages
+            #tableau des scores avec leurs urls triées
+            score=calculScore25(requete,reverseContenu)
+
+            #si on a plus de 10 pages
+            if len(score)>10:
+                #on prend les 10 meilleurs pages
+                score=score[0:10]
+                for j in range(len(score)):
+                    bestPages.append(score[j][1])
+            else:
+                for j in range(len(score)):
+                    bestPages.append(score[j][1])
+            return bestPages

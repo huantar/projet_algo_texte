@@ -23,19 +23,30 @@ class Serv(BaseHTTPRequestHandler):
             if pattern.match(self.path):
                 self.path= "/view/A.html"
             else:
+                #On récupère la recherche de l'utilisateur
                 motRechercher = self.path[9::]
                 print("Le mot recherché est : \"", motRechercher, "\"")
+
                 meilleur = self.index_inverse.recherche(motRechercher)
                 print ("Il y a", len(meilleur), "pages pour cette recherche")
 
+                #On copie le fichier modele Bbis pour lui ajouter les résulats
                 shutil.copy("View/Bbis.html", "View/B.html")
 
+                #On ouvre le fichier où l'on va afficher les pages
                 file = open("View/B.html","a")
-                message=""
-                for j in meilleur:
-                    message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
-
-                message = message + '<button type="button" name="more" class="btn btn-primary mt-3 offset-2">Charger plus</button></div></div></body></html>'
+                #On initialise la variable que l'on va insérer dans le fichier B
+                message='<h2>Recherche : ' + motRechercher + '</h2>'
+                #Si le tableau ne contient aucune page, alors il n'y a pas de résultat
+                if len(meilleur)==0:
+                    message = message + '<h4>Aucune page ne correspond a votre recherche</h4>'
+                else:
+                    #Si il y a des résultats, alors on va les concaténer à la variable message
+                    for j in meilleur:
+                        message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+                    message = message + '<button type="button" name="more" class="btn btn-primary mt-3 offset-2">Charger plus</button>'
+                message = message + '</div></div></body></html>'
+                #On écrit la variable message à la fin du fichier B
                 file.write(message)
                 file.close()
 
