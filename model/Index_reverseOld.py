@@ -15,16 +15,17 @@ class Index_reverse :
         for i in range(len(index)):
             index[i][1]=index[i][1].split()
             self.mots.extend(list(dict.fromkeys(index[i][1])))
-            #on s'assure d'enlever les mots qui reviennent dans plusieurs pages pour construire le disctionnaire
-            self.mots=list(dict.fromkeys(self.mots))
-            #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
-            for j in range(len(self.mots)):
-                self.reverse.append([self.mots[j],[]])
-                if self.mots[j] in index[i][1]:
+        #on s'assure d'enlever les mots qui reviennent dans plusieurs pages pour construire le disctionnaire
+        self.mots=list(dict.fromkeys(self.mots))
+        #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
+        for i in range(len(self.mots)):
+            self.reverse.append([self.mots[i],[]])
+            for j in range(len(index)):
+                if self.mots[i] in index[j][1]:
                     #on ajoute [url,page] à reverse
-                    self.reverse[j][1].append([index[i][0],index[i][1]])
+                    self.reverse[i][1].append([index[j][0],index[j][1]])
                     #supprimer le mots de la page
-                    index[i][1] = list(filter(lambda x: x != mots[j], index[i][1]))
+                    #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
     
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
     def recherche(requete):
@@ -53,3 +54,4 @@ class Index_reverse :
             for j in range(len(score)):
                 bestPages.append(score[j][1])
         return bestPages
+        
