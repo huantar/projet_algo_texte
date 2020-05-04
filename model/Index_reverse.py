@@ -21,7 +21,7 @@ class Index_reverse :
             taille=len(self.mots)
             taillePar2=len(self.mots)/2
             #mots pair
-            if len(mots)%2==0:
+            if len(self.mots)%2==0:
                 taillePar2=round(taillePar2)
                 taille=taille-1
                 for j in range(taillePar2):
