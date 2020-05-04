@@ -49,7 +49,9 @@ def calculAVGDL(listeDocuments):
     nombreDocuments=len(listeDocuments)
     for i in range(len(listeDocuments)):
         sommeMots=sommeMots+len(listeDocuments[i][1])
-    avgdl=sommeMots/nombreDocuments
+    avgdl = 0
+    if nombreDocuments != 0:
+        avgdl=sommeMots/nombreDocuments
     return avgdl
 
 #prend en paramètre l'index qui a son contenu splité et la requete splité

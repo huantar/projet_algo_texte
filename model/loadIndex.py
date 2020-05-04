@@ -2,7 +2,7 @@ import os
 import re
 from bs4 import BeautifulSoup
 from progress.bar import Bar
-from distancePage import *
+from model.distancePage import *
 import time
 
 class Data :
@@ -76,7 +76,7 @@ class Data :
         print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans l'index")
 
     def find_word(self, word):
-        print(self.index)
+        #print(self.index)
         word_same=[]
         #si on cherche un chiffre alors on ne fait pas hamming
         if word.isdigit():
