@@ -1,4 +1,13 @@
 from model.calculScore import *
+import re
+
+class mot :
+    #de la forme [[url1,pages]....[urlN,page]]
+    apparition = []
+    def __init__(self, string, tab):
+        self.nom = string
+        apparition = self.apparition.append(tab)
+
 
 class Index_reverse :
     """ Répertorie les mots de l'index selon les pages où ils se trouvent et leur occurence dans ces pages.
@@ -19,14 +28,18 @@ class Index_reverse :
         self.mots=list(dict.fromkeys(self.mots))
         #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
         for i in range(len(self.mots)):
-            self.reverse.append([self.mots[i],[]])
-            for j in range(len(index)):
-                if self.mots[i] in index[j][1] and index[j][2] == 0:
-                    #on ajoute [url,page] à reverse
-                    self.reverse[i][1].append([index[j][0],index[j][1]])
-                    #supprimer le mots de la page
-                    index[j][2] = 1
+            pattern = re.compile("(^([a-z]*[A-Z]*)*)")
+            if pattern.match(self.mots[i]):
+                self.reverse.insert(i,[[self.mots[i]],[]])
 
+                for j in range(len(index)):
+                    if self.mots[i] in index[j][1] and index[j][2] == 0:
+                        #on ajoute [url,page] à reverse
+                        self.reverse[i][1].extend([index[j][0],index[j][1]])
+                        #supprimer le mots de la page
+                        index[j][2] = 1
+            else :
+                index[j][2] = 1
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
     def recherche(self, requete, d):
         requete=requete.split()
@@ -35,6 +48,7 @@ class Index_reverse :
         for i in range(len(requete)):
             mProches.append(d.find_word(requete[i]))
         print ("Les mots proches sont : ", mProches)
+        print(self.reverse)
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
         for i in range(len(requete)):
