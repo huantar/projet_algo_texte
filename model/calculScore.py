@@ -28,8 +28,9 @@ def calculIDF(requete,listeDocuments):
         for j in range(len(listeDocuments)):
             if listeDocuments[j][1].count(dictionnaireMots[k])>0:
                 occurParDoc+=1
-        idfValeur=math.log10(nbrDocuments/occurParDoc)
-        IDF.append([dictionnaireMots[k],idfValeur])
+        if occurParDoc > 0:
+            idfValeur=math.log10(nbrDocuments/occurParDoc)
+            IDF.append([dictionnaireMots[k],idfValeur])
     return IDF
 
 #prend en paramètre le tableau des TF et celui des IDF
@@ -61,11 +62,11 @@ def calculScore25(requete,listeDocuments):
     avgdl=calculAVGDL(listeDocuments)
     k=2.0
     b=0.75
-    for j in range(len(listeDocuments)):   
+    for j in range(len(listeDocuments)):
         for i in range(len(idf)):
             dividende=idf[i][1]*(listeDocuments[j][1].count(idf[i][0])*(k+1))
             diviseur=listeDocuments[j][1].count(idf[i][0])+k*((1-b)+b*(len(listeDocuments[j][1])/avgdl))
             score25=score25+(dividende/diviseur)
         score.append([score25,listeDocuments[j][0]])
     score=sorted(score, key=itemgetter(0),reverse=True)
-    return score    
+    return score

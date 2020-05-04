@@ -9,7 +9,6 @@ class Data :
 
     index = []
     list_same = []
-    word_same = []
 
     # On initialise la classe avec un index qu'on "nettoie"
     def __init__(self, repertoire):
@@ -77,20 +76,22 @@ class Data :
         print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans l'index")
 
     def find_word(self, word):
-        print("on cherche le mot " + str(word) + "\n")
+        print(self.index)
+        word_same=[]
         #si on cherche un chiffre alors on ne fait pas hamming
         if word.isdigit():
             for page in self.index :
-                txt = page[1].split()
+                txt = page[1]
                 for mot in txt :
                     if word == mot:
-                        self.word_same.append(mot)
+                        word_same.append(mot)
         #Sinon il s'agit d'un mot avec des faute potentiel donc on fait hamming
         else:
             for page in self.index :
-                txt = page[1].split()
+                txt = page[1]
                 wt = len(word)
                 for mot in txt :
                     if dist_hamming(mot,word) < wt/2 and wt-1 <= len(mot)  <= wt+1 :
-                        self.word_same.append(mot)
-        print("voici la liste des mots trouver : " + str(self.word_same))
+                        word_same.append(mot)
+        #print("voici la liste des mots trouver : " + str(self.word_same))
+        return word_same

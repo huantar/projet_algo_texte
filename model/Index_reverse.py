@@ -25,11 +25,16 @@ class Index_reverse :
                     #on ajoute [url,page] à reverse
                     self.reverse[i][1].append([index[j][0],index[j][1]])
                     #supprimer le mots de la page
-                    #index[j][1] = list(filter(lambda x: x != mots[i], index[j][1]))
+                    index[j][1] = list(filter(lambda x: x != self.mots[i], index[j][1]))
 
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
-    def recherche(self, requete):
+    def recherche(self, requete, d):
         requete=requete.split()
+        #On recherche les mots proches
+        mProches = []
+        for i in range(len(requete)):
+            mProches.append(d.find_word(requete[i]))
+        print ("Les mots proches sont : ", mProches)
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
         for i in range(len(requete)):
@@ -42,7 +47,7 @@ class Index_reverse :
                     else:
                         reverseContenu.extend(self.reverse[indice][1])
         bestPages=[]
-        if len(reverseContenu)==0:
+        if not(reverseContenu):
             return bestPages
         else:
             #tableau des scores avec leurs urls triées

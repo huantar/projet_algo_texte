@@ -25,9 +25,10 @@ class Serv(BaseHTTPRequestHandler):
             else:
                 #On récupère la recherche de l'utilisateur
                 motRechercher = self.path[9::]
+                motRechercher = motRechercher.replace("+", " ")
                 print("Le mot recherché est : \"", motRechercher, "\"")
 
-                meilleur = self.index_inverse.recherche(motRechercher)
+                meilleur = self.index_inverse.recherche(motRechercher, self.data)
                 print ("Il y a", len(meilleur), "pages pour cette recherche")
 
                 #On copie le fichier modele Bbis pour lui ajouter les résulats
@@ -44,7 +45,6 @@ class Serv(BaseHTTPRequestHandler):
                     #Si il y a des résultats, alors on va les concaténer à la variable message
                     for j in meilleur:
                         message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
-                    message = message + '<button type="button" name="more" class="btn btn-primary mt-3 offset-2">Charger plus</button>'
                 message = message + '</div></div></body></html>'
                 #On écrit la variable message à la fin du fichier B
                 file.write(message)
