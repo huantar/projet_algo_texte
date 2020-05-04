@@ -1,16 +1,14 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from os import curdir, sep
 import re
-import shutil
 from model.loadIndex import *
-from model.Index_reverse import *
 
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
     data = Data(repertoire)
-    index_inverse = Index_reverse(data.index)
+
     print(data.index[1][0])
 
     #function qui gere les requetes GET

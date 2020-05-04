@@ -2,7 +2,7 @@ import os
 import re
 from bs4 import BeautifulSoup
 from progress.bar import Bar
-from model.distancePage import *
+from distancePage import *
 import time
 
 class Data :
@@ -42,15 +42,15 @@ class Data :
         cmpt = 0
         # on definit la valeur max pour hamming qu'on accepte
         # En francais un mot fait 5 lettres en moyenne,
-        # donc pour comparer les ~20 premiers mots on fait un max de 100
-        maxh = 100
+        # donc pour comparer les ~40 premiers mots on fait un max de 200
+        maxh = 200
         #notre bar de progression
         bar = Bar('Analyse des pages :', max=(len(self.index)))
         for i in range(0,len(self.index)):
             bar.next()
             for j in range(i+1,len(self.index)):
                 if (dist_hamming(self.index[i][0], self.index[j][0]) < 15) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
-                    if (dist_hamming(self.index[i][1], self.index[j][1]) < maxh+5):
+                    if (dist_hamming(self.index[i][1], self.index[j][1]) < maxh):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
                         if self.index[j][2] == 0 :

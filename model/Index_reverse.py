@@ -1,4 +1,4 @@
-from model.calculScore import *
+from calculScore import *
 
 class Index_reverse :
     """ Répertorie les mots de l'index selon les pages où ils se trouvent et leur occurence dans ces pages.
@@ -15,15 +15,14 @@ class Index_reverse :
         for i in range(len(index)):
             index[i][1]=index[i][1].split()
             self.mots.extend(list(dict.fromkeys(index[i][1])))
-        #on s'assure d'enlever les mots qui reviennent dans plusieurs pages pour construire le disctionnaire
-        self.mots=list(dict.fromkeys(self.mots))
-        #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
-        for i in range(len(self.mots)):
-            self.reverse.append([self.mots[i],[]])
-            for j in range(len(index)):
-                if self.mots[i] in index[j][1]:
+            #on s'assure d'enlever les mots qui reviennent dans plusieurs pages pour construire le disctionnaire
+            self.mots=list(dict.fromkeys(self.mots))
+            #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
+            for j in range(len(self.mots)):
+                self.reverse.append([self.mots[j],[]])
+                if self.mots[j] in index[i][1]:
                     #on ajoute [url,page] à reverse
-                    self.reverse[i][1].append([index[j][0],index[j][1]])
+                    self.reverse[j][1].append([index[i][0],index[i][1]])
                     #supprimer le mots de la page
                     index[j][1] = list(filter(lambda x: x != self.mots[i], index[j][1]))
 
@@ -46,20 +45,12 @@ class Index_reverse :
                         print("page déjà en traitement")
                     else:
                         reverseContenu.extend(self.reverse[indice][1])
+        #tableau des scores avec leurs urls triées
+        score=calculScore25(requete,reverseContenu)
         bestPages=[]
         if not(reverseContenu):
             return bestPages
         else:
-            #tableau des scores avec leurs urls triées
-            score=calculScore25(requete,reverseContenu)
-
-            #si on a plus de 10 pages
-            if len(score)>10:
-                #on prend les 10 meilleurs pages
-                score=score[0:10]
-                for j in range(len(score)):
-                    bestPages.append(score[j][1])
-            else:
-                for j in range(len(score)):
-                    bestPages.append(score[j][1])
-            return bestPages
+            for j in range(len(score)):
+                bestPages.append(score[j][1])
+        return bestPages
