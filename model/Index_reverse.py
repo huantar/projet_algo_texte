@@ -8,24 +8,39 @@ class Index_reverse :
         """
 
     #constructeur de la classe index reserve
-    def __init__(self,index):
-        self.mots=[]
+    def init(self,index):
         self.reverse=[]
         #on enleve les doublons du contenu de chaque page avec split et on met la liste renvoyé à mots
         for i in range(len(index)):
             index[i][1]=index[i][1].split()
-            self.mots.extend(list(dict.fromkeys(index[i][1])))
-        #on s'assure d'enlever les mots qui reviennent dans plusieurs pages pour construire le disctionnaire
-        self.mots=list(dict.fromkeys(self.mots))
-        #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
-        for i in range(len(self.mots)):
-            self.reverse.append([self.mots[i],[]])
-            for j in range(len(index)):
-                if self.mots[i] in index[j][1] and index[j][2] == 0:
-                    #on ajoute [url,page] à reverse
-                    self.reverse[i][1].append([index[j][0],index[j][1]])
-                    #supprimer le mots de la page
-                    index[j][2] = 1
+            mots=[]
+            mots.extend(list(dict.fromkeys(index[i][1])))
+            for k in range(len(mots)):
+                if mots[k] in reverse:
+                    self.reverse[self.reverse.index(mots[k])+1].append(index[i][0])
+                else:
+                    self.reverse.append(mots[k])
+                    self.reverse.append([index[i][0]])
+
+    # Ancien constructeur de la classe index reserve
+    # def __init__(self,index):
+    #     self.mots=[]
+    #     self.reverse=[]
+    #     #on enleve les doublons du contenu de chaque page avec split et on met la liste renvoyé à mots
+    #     for i in range(len(index)):
+    #         index[i][1]=index[i][1].split()
+    #         self.mots.extend(list(dict.fromkeys(index[i][1])))
+    #     #on s'assure d'enlever les mots qui reviennent dans plusieurs pages pour construire le disctionnaire
+    #     self.mots=list(dict.fromkeys(self.mots))
+    #     #on définit reverse de la forme [[mots1,[url1,pages]....[urlN,page]],...,[motsN[url1,pages]....[urlN,page]]]
+    #     for i in range(len(self.mots)):
+    #         self.reverse.insert(self.mots[i],[self.mots[i],[]])
+    #         for j in range(len(index)):
+    #             if self.mots[i] in index[j][1] and index[j][2] == 0:
+    #                 #on ajoute [url,page] à reverse
+    #                 self.reverse[i][1].append([index[j][0],index[j][1]])
+    #                 #supprimer le mots de la page
+    #                 index[j][2] = 1
 
     #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
     def recherche(self, requete, d):
