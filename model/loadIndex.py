@@ -1,5 +1,5 @@
 import os
-import re
+import re, string
 from bs4 import BeautifulSoup
 from progress.bar import Bar
 from model.distancePage import *
@@ -27,7 +27,11 @@ class Data :
             bar.next()
             cheminFichier = repertoire + "/" + nomFichier
             fichier = open(cheminFichier,"rb")
-            contenu = BeautifulSoup(fichier.read(), "html.parser").get_text()
+            contenu = BeautifulSoup(fichier.read(), "html.parser").get_text().lower()
+            #on remplace par des espace lescaracteres de separation (dates, ...)
+            contenu = re.sub('\/|\-', " ", contenu)
+            #on supprime les ponctuation et texte inutile
+            contenu = re.sub('\.|\(|\)|\_|\,|\;|\:|\&|\!|\?|[a-z]+\@[a-z]+|https?[a-z]*', "", contenu)
             contenu = ' '.join(contenu.split())
             self.index.append([nomFichier,contenu, 0])
             fichier.close()
