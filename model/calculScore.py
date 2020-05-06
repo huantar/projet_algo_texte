@@ -27,11 +27,14 @@ def calculIDF(requete,listeDocuments):
     print(dictionnaireMots)
     if (len(dictionnaireMots)) == 1 :
         occurParDoc=0
-        for j in range(len(listeDocuments)):
-            occurParDoc+= listeDocuments[j][1].count(dictionnaireMots[0])
+        for page in listeDocuments:
+            occurParDoc+= page[1].count(dictionnaireMots[0])
         if occurParDoc > 0:
             idfValeur=math.log10(nbrDocuments/occurParDoc)
-            IDF = [[dictionnaireMots,idfValeur]]
+            IDF = [[dictionnaireMots[0],idfValeur]]
+        print(page[1])
+        print("idf pour un mot :")
+        print(IDF)
     else :
         for k in range(len(dictionnaireMots)):
             occurParDoc=0

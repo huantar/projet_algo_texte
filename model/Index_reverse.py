@@ -54,10 +54,10 @@ class Index_reverse :
         #liste de page (0:url et 1:contenue) ou notre mot apparait
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
-        for i in range(len(requete)):
-            if requete[i] in self.reverse:
+        for i in range(len(mProches)):
+            if mProches[i] in self.reverse:
                 #on retrouve la case du mot dans reverse et on ajoute 1 pour ca case d'urls
-                indice=(self.reverse.index(requete[i]))+1
+                indice=(self.reverse.index(mProches[i]))+1
                 #on évite de mettre 2 fois la même page pour le calcul
                 for k in range(len(self.reverse[indice])):
                     if self.reverse[indice][k] not in reverseContenu :
