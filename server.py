@@ -8,7 +8,7 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web150"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
 
@@ -16,8 +16,6 @@ class Serv(BaseHTTPRequestHandler):
     index_inverse = Index_reverse(data.index)
     # print(index_inverse.reverse[0])
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
-
-    print(data.index[1][0])
 
     #function qui gere les requetes GET
     def do_GET(self):
@@ -48,9 +46,14 @@ class Serv(BaseHTTPRequestHandler):
                 if len(meilleur)==0:
                     message = message + '<h4>Aucune page ne correspond a votre recherche</h4>'
                 else:
-                    #Si il y a des résultats, alors on va les concaténer à la variable message
-                    for j in meilleur:
-                        message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+                    #Si il y a des résultats, alors on va concaténer les 10 premiers  à la variable message
+                    if len(meilleur) <= 10 :
+                        for j in meilleur:
+                            message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+                    else:
+                        for j in meilleur:
+                            message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+
                 message = message + '</div></div></body></html>'
                 #On écrit la variable message à la fin du fichier B
                 file.write(message)

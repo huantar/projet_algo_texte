@@ -50,7 +50,6 @@ class Index_reverse :
         mProches = []
         for i in range(len(requete)):
             mProches = mProches + d.find_word(requete[i])
-        print ("Les mots proches sont : ", mProches)
         #liste de page (0:url et 1:contenue) ou notre mot apparait
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
@@ -71,12 +70,11 @@ class Index_reverse :
         #tableau des scores avec leurs urls triées
         if len(reverseContenu) > 0:
             score=calculScore25(requete,reverseContenu)
-            print("voici le tableau des score :")
-            print(score)
         bestPages=[]
         if not(reverseContenu):
             return bestPages
         else:
             for j in range(len(score)):
                 bestPages.append(score[j][1])
+                
         return bestPages
