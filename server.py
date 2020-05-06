@@ -8,10 +8,14 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web150"
+    # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
 
+    start = time.time()
     index_inverse = Index_reverse(data.index)
+    # print(index_inverse.reverse[0])
+    print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
 
     print(data.index[1][0])
 

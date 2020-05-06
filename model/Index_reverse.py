@@ -8,7 +8,8 @@ class Index_reverse :
         """
 
     #constructeur de la classe index reserve
-    def init(self,index):
+    def __init__(self,index):
+        # reverse est de la formze : [mots,[url1,url2,...],mot2,[url1,..url]...]
         self.reverse=[]
         #on enleve les doublons du contenu de chaque page avec split et on met la liste renvoyé à mots
         for i in range(len(index)):
@@ -16,7 +17,7 @@ class Index_reverse :
             mots=[]
             mots.extend(list(dict.fromkeys(index[i][1])))
             for k in range(len(mots)):
-                if mots[k] in reverse:
+                if mots[k] in self.reverse:
                     self.reverse[self.reverse.index(mots[k])+1].append(index[i][0])
                 else:
                     self.reverse.append(mots[k])
@@ -48,19 +49,27 @@ class Index_reverse :
         #On recherche les mots proches
         mProches = []
         for i in range(len(requete)):
-            mProches.append(d.find_word(requete[i]))
+            mProches = mProches + d.find_word(requete[i])
         print ("Les mots proches sont : ", mProches)
+        #list d'url auquelle le mot apparait
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
         for i in range(len(requete)):
-            if requete[i] in self.mots:
-                indice=self.mots.index(requete[i])
+            if requete[i] in self.reverse:
+                #on retrouve la case du mot dans reverse et on ajoute 1 pour ca case d'urls
+                indice=(self.reverse.index(requete[i]))+1
                 #on évite de mettre 2 fois la même page pour le calcul
-                for k in range(len(self.reverse[indice][1])):
-                    if self.reverse[indice][1][k] in reverseContenu :
-                        print("page déjà en traitement")
-                    else:
-                        reverseContenu.extend(self.reverse[indice][1])
+                for k in range(len(self.reverse[indice])):
+                    if self.reverse[indice][k] not in reverseContenu :
+                        reverseContenu.append(self.reverse[indice][k])
+        print(reverseContenu)
+        #on remplace les url par le contenu des pages
+        for url in reverseContenu:
+            print("on test l\'url :" + str(url))
+            for page in d.index :
+                if url == page[0] :
+                    reverseContenu[reverseContenu.index(url)] = page[1]
+
         #tableau des scores avec leurs urls triées
         score=calculScore25(requete,reverseContenu)
         bestPages=[]

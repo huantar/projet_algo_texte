@@ -2,7 +2,7 @@
 #renvoie le contenu split sans les doublons
 def enleveDoublons(requete):
     #on enlève les doublons
-    dictionnaireMots=list(dict.fromkeys(requete))
+    dictionnaireMots = list(dict.fromkeys(requete))
     return dictionnaireMots
 
 #prend en paramètre le contenu split d'une requête
@@ -25,8 +25,12 @@ def calculIDF(requete,listeDocuments):
     dictionnaireMots=enleveDoublons(requete)
     for k in range(len(dictionnaireMots)):
         occurParDoc=0
-        for j in range(len(listeDocuments)):
-            if listeDocuments[j][1].count(dictionnaireMots[k])>0:
+        for j in range(0,len(listeDocuments)):
+            print("k :" + str(k) + " taille dict : " + str(len(dictionnaireMots)))
+            print("j :" + str(j) + " taille doc : " + str(len(listeDocuments)))
+            print("doc aff : ")
+            print(listeDocuments[j])
+            if (listeDocuments[j].count(dictionnaireMots[k]))>0:
                 occurParDoc+=1
         if occurParDoc > 0:
             idfValeur=math.log10(nbrDocuments/occurParDoc)
