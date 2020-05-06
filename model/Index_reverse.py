@@ -65,12 +65,12 @@ class Index_reverse :
         print(reverseContenu)
         #on remplace les url par le contenu des pages
         for url in reverseContenu:
-            print("on test l\'url :" + str(url))
             for page in d.index :
                 if url == page[0] :
                     reverseContenu[reverseContenu.index(url)] = [page[0] ,page[1]]
         #tableau des scores avec leurs urls triées
         score=calculScore25(requete,reverseContenu)
+        print("voici le tableau des score :")
         print(score)
         bestPages=[]
         if not(reverseContenu):

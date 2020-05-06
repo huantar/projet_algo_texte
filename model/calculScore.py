@@ -23,20 +23,23 @@ def calculIDF(requete,listeDocuments):
     IDF=[]
     nbrDocuments=len(listeDocuments)
     dictionnaireMots=enleveDoublons(requete)
-    print("on a une lits de doc : " + str(nbrDocuments) + " et voici index 0 de list doc :")
-    print(listeDocuments[0])
-    for k in range(len(dictionnaireMots)):
+    print(" voici les mots cherchée : " )
+    print(dictionnaireMots)
+    if (len(dictionnaireMots)) == 1 :
         occurParDoc=0
-        for j in range(0,len(listeDocuments)):
-            # print("k :" + str(k) + " taille dict : " + str(len(dictionnaireMots)))
-            # print("j :" + str(j) + " taille doc : " + str(len(listeDocuments)))
-            # print("doc aff : ")
-            # print(listeDocuments[j])
-            if (listeDocuments[j][1].count(dictionnaireMots[k]))>0:
-                occurParDoc+=1
+        for j in range(0,len(listeDocuments[0])):
+            occurParDoc+= listeDocuments[j][1].count(dictionnaireMots[0])
         if occurParDoc > 0:
             idfValeur=math.log10(nbrDocuments/occurParDoc)
-            IDF.append([dictionnaireMots[k],idfValeur])
+            IDF = [[dictionnaireMots,idfValeur]]
+    else :
+        for k in range(len(dictionnaireMots)):
+            occurParDoc=0
+            for j in range(0,len(listeDocuments)):
+                occurParDoc+= listeDocuments[j][1].count(dictionnaireMots[k])
+            if occurParDoc > 0:
+                idfValeur=math.log10(nbrDocuments/occurParDoc)
+                IDF.append([dictionnaireMots[k],idfValeur])
     return IDF
 
 #prend en paramètre le tableau des TF et celui des IDF
@@ -72,6 +75,7 @@ def calculScore25(requete,listeDocuments):
     b=0.75
     for j in range(len(listeDocuments)):
         for i in range(len(idf)):
+            print(idf)
             dividende=idf[i][1]*(listeDocuments[j][1].count(idf[i][0])*(k+1))
             diviseur=listeDocuments[j][1].count(idf[i][0])+k*((1-b)+b*(len(listeDocuments[j][1])/avgdl))
             score25=score25+(dividende/diviseur)
