@@ -51,8 +51,8 @@ class Serv(BaseHTTPRequestHandler):
                         for j in meilleur:
                             message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
                     else:
-                        for j in meilleur:
-                            message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+                        for j in range(10):
+                            message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ meilleur[j] + '">' + meilleur[j] + '</h2> </div>'
 
                 message = message + '</div></div></body></html>'
                 #On écrit la variable message à la fin du fichier B
