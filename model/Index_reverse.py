@@ -61,7 +61,6 @@ class Index_reverse :
                 for k in range(len(self.reverse[indice])):
                     if self.reverse[indice][k] not in reverseContenu :
                         reverseContenu.append(self.reverse[indice][k])
-        print(reverseContenu)
         #on remplace les url par le contenu des pages
         for url in reverseContenu:
             for page in d.index :
@@ -70,7 +69,7 @@ class Index_reverse :
         #tableau des scores avec leurs urls triées
         if len(reverseContenu) > 0:
             score=calculScore25(requete,reverseContenu)
-        print(score)
+        # print(score)
         bestPages=[]
         if not(reverseContenu):
             return bestPages

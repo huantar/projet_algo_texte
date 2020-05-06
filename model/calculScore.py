@@ -23,8 +23,6 @@ def calculIDF(requete,listeDocuments):
     IDF=[]
     nbrDocuments=len(listeDocuments)
     dictionnaireMots=enleveDoublons(requete)
-    print(" voici les mots cherchée : " )
-    print(dictionnaireMots)
     if (len(dictionnaireMots)) == 1 :
         occurParDoc=0
         for page in listeDocuments:
@@ -32,9 +30,6 @@ def calculIDF(requete,listeDocuments):
         if occurParDoc > 0:
             idfValeur=math.log10(nbrDocuments/occurParDoc)
             IDF = [[dictionnaireMots[0],idfValeur]]
-        print(page[1])
-        print("idf pour un mot :")
-        print(IDF)
     else :
         for k in range(len(dictionnaireMots)):
             occurParDoc=0
@@ -78,7 +73,6 @@ def calculScore25(requete,listeDocuments):
     b=0.75
     for j in range(len(listeDocuments)):
         for i in range(len(idf)):
-            print(idf)
             dividende=idf[i][1]*(listeDocuments[j][1].count(idf[i][0])*(k+1))
             diviseur=listeDocuments[j][1].count(idf[i][0])+k*((1-b)+b*(len(listeDocuments[j][1])/avgdl))
             score25=score25+(dividende/diviseur)

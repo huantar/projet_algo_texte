@@ -69,7 +69,6 @@ class Data :
         for i in range(len(self.index)):
             if self.index[i][2] == 0:
                 cmpt += 1
-        print(cmpt)
 
     # Supprime les pages trop similaires et n'en garde qu'une
     #créer une liste des pages trop similaires

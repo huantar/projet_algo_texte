@@ -8,7 +8,7 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web150"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
 
