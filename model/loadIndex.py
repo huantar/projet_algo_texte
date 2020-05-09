@@ -47,20 +47,21 @@ class Data :
         list_same = []
         #Compteur page trop similaires
         cmpt = 0
+        maxh = 200
         #notre bar de progression
         bar = Bar('Analyse des pages :', max=(len(self.index)))
-        for url, contenu  in self.index.items():
+        tabPage = list(self.index.keys())
+        for i in range(0,len(tabPage)):
             bar.next()
-            for new_url, new_contenu in self.index.items():
-                if  url != new_url and (dist_hamming(new_url, url) < 6) and (contenu[1] < 3) and  (new_contenu[1] < 3):
-                    # Une pages est trop similaires si hamming est superieur a 1/4 de la page initial
-                    if (dist_hamming(contenu[0], new_contenu[0]) < (len(contenu[0])/4)):
+            for j in range(i+1,len(tabPage)):
+                if (dist_hamming(tabPage[i], tabPage[j]) < 6) and (self.index[tabPage[i]][1] < 3) and (self.index[tabPage[j]][1] < 3):
+                    if (dist_hamming(self.index[tabPage[i]][0], self.index[tabPage[j]][0]) < (len(self.index[tabPage[i]][0])/4)):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
-                        if new_contenu[1] == 0 :
-                            self.list_same.append(new_url)
+                        if self.index[tabPage[j]][1] == 0 :
+                            self.list_same.append(tabPage[j])
                         #on marque les page qui ressemblent a la notre
-                        new_contenu[1] += 1
+                        self.index[tabPage[j]][1] += 1
         bar.finish()
 
     # Supprime les pages trop similaires et n'en garde qu'une
@@ -68,7 +69,7 @@ class Data :
     def clean_index(self):
         print("Avant suppression on avait : " + str(len(self.index)) + " pages dans l'index")
         for url in self.list_same :
-                del self.index[url]
+            self.index.pop(url)
         print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans l'index")
 
     def find_word(self, requete):
