@@ -47,6 +47,7 @@ class Data :
         list_same = []
         #Compteur page trop similaires
         cmpt = 0
+        #on definit la hamming max pour les 40 premiers mots (5*40)
         maxh = 200
         #notre bar de progression
         bar = Bar('Analyse des pages :', max=(len(self.index)))
@@ -55,7 +56,7 @@ class Data :
             bar.next()
             for j in range(i+1,len(tabPage)):
                 if (dist_hamming(tabPage[i], tabPage[j]) < 6) and (self.index[tabPage[i]][1] < 3) and (self.index[tabPage[j]][1] < 3):
-                    if (dist_hamming(self.index[tabPage[i]][0], self.index[tabPage[j]][0]) < (len(self.index[tabPage[i]][0])/4)):
+                    if (dist_hamming(self.index[tabPage[i]][0], self.index[tabPage[j]][0]) < maxh):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
                         if self.index[tabPage[j]][1] == 0 :
