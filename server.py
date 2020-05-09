@@ -8,7 +8,7 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web3000"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
 
@@ -49,7 +49,8 @@ class Serv(BaseHTTPRequestHandler):
                 #On ouvre le fichier où l'on va afficher les pages
                 file = open("View/B.html","a")
                 #On initialise la variable que l'on va insérer dans le fichier B
-                message='<h2>Recherche : ' + motRechercher + '</h2>'
+                message='<div class="row>"<h2 class="">Recherche : ' + motRechercher + '</h2>'
+                message = '<h2 class="">Pages correspondantes : ' + str(len(meilleur)) + '</h2></div>'
                 #Si le tableau ne contient aucune page, alors il n'y a pas de résultat
                 if len(meilleur)==0:
                     message = message + '<h4>Aucune page ne correspond a votre recherche</h4>'

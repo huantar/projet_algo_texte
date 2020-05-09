@@ -7,7 +7,7 @@ import time
 
 class Data :
 
-    index = []
+    index = {}
     list_same = []
 
     # On initialise la classe avec un index qu'on "nettoie"
@@ -36,7 +36,7 @@ class Data :
             contenu = re.sub('\'|\`|\=|\"|\[|\]|\+|\.|\(|\)|\_|\,|\;|\:|\&|\!|\?|[a-z]+\@[a-z]+|https?[a-z]*|[0-9]*[a-z]*\=[0-9]*', "", contenu)
             # contenu = contenu.decode('utf-8','ignore').encode("utf-8")
             contenu = ' '.join(contenu.split())
-            self.index.append([nomFichier,contenu, 0])
+            self.index[nomFichier] = [contenu, 0]
             fichier.close()
         bar.finish()
 
@@ -49,52 +49,40 @@ class Data :
         cmpt = 0
         #notre bar de progression
         bar = Bar('Analyse des pages :', max=(len(self.index)))
-        for i in range(0,len(self.index)):
+        for url, contenu  in self.index.items():
             bar.next()
-            for j in range(i+1,len(self.index)):
-                if (dist_hamming(self.index[i][0], self.index[j][0]) < 6) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
+            for new_url, new_contenu in self.index.items():
+                if  url != new_url and (dist_hamming(new_url, url) < 6) and (contenu[1] < 3) and  (new_contenu[1] < 3):
                     # Une pages est trop similaires si hamming est superieur a 1/4 de la page initial
-                    if (dist_hamming(self.index[i][1], self.index[j][1]) < (len(self.index[i][1])/4)):
+                    if (dist_hamming(contenu[0], new_contenu[0]) < (len(contenu[0])/4)):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
-                        if self.index[j][2] == 0 :
-                            self.list_same.append(self.index[j])
+                        if new_contenu[1] == 0 :
+                            self.list_same.append(new_url)
                         #on marque les page qui ressemblent a la notre
-                        self.index[j][2] += 1
+                        new_contenu[1] += 1
         bar.finish()
-
-    #Compte les pages non-simialires (pour test suppression)
-    def show_no_same(self):
-        cmpt = 0
-        for i in range(len(self.index)):
-            if self.index[i][2] == 0:
-                cmpt += 1
 
     # Supprime les pages trop similaires et n'en garde qu'une
     #créer une liste des pages trop similaires
     def clean_index(self):
         print("Avant suppression on avait : " + str(len(self.index)) + " pages dans l'index")
-        for page in self.list_same :
-                self.index.remove(page)
+        for url in self.list_same :
+                del self.index[url]
         print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans l'index")
 
-    def find_word(self, word):
+    def find_word(self, requete):
         #print(self.index)
         word_same=[]
         #si on cherche un chiffre alors on ne fait pas hamming
-        if word.isdigit():
-            for page in self.index :
-                txt = page[1]
-                for mot in txt :
-                    if word == mot:
-                        word_same.append(mot)
-        #Sinon il s'agit d'un mot avec des faute potentiel donc on fait hamming
-        else:
-            for page in self.index :
-                txt = page[1]
-                wt = len(word)
-                for mot in txt :
-                    if dist_hamming(mot,word) < wt/2 and wt-1 <= len(mot)  <= wt+1 :
-                        word_same.append(mot)
+        for url, page in self.index.items() :
+            txt = page[0]
+            for mot in txt :
+                for motReq in requete :
+                    if motReq.isdigit():
+                        word_same.append(motReq)
+                    else :
+                        if dist_hamming(mot,motReq) < wt/2 and wt-1 <= len(mot)  <= wt+1 :
+                            word_same.append(mot)
         #print("voici la liste des mots trouver : " + str(self.word_same))
         return word_same
