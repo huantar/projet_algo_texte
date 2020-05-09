@@ -27,7 +27,8 @@ class Data :
             bar.next()
             cheminFichier = repertoire + "/" + nomFichier
             fichier = open(cheminFichier,"rb")
-            contenu = BeautifulSoup(fichier.read(), "html.parser").get_text().lower()
+            contenu = BeautifulSoup(fichier.read().decode('utf-8', 'ignore'), "html.parser").get_text().lower()
+
             #on remplace par des espace lescaracteres de separation (dates, ...)
             contenu = re.sub('\/|\-', " ", contenu)
             #on supprime les ponctuation et texte inutile
@@ -46,17 +47,14 @@ class Data :
         list_same = []
         #Compteur page trop similaires
         cmpt = 0
-        # on definit la valeur max pour hamming qu'on accepte
-        # En francais un mot fait 5 lettres en moyenne,
-        # donc pour comparer les ~20 premiers mots on fait un max de 120
-        maxh = 120
         #notre bar de progression
         bar = Bar('Analyse des pages :', max=(len(self.index)))
         for i in range(0,len(self.index)):
             bar.next()
             for j in range(i+1,len(self.index)):
                 if (dist_hamming(self.index[i][0], self.index[j][0]) < 6) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
-                    if (dist_hamming(self.index[i][1], self.index[j][1]) < maxh):
+                    # Une pages est trop similaires si hamming est superieur a 1/4 de la page initial
+                    if (dist_hamming(self.index[i][1], self.index[j][1]) < (len(self.index[i][1])/4)):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires
                         if self.index[j][2] == 0 :

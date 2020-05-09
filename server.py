@@ -8,7 +8,7 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web3000"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
 
@@ -35,7 +35,7 @@ class Serv(BaseHTTPRequestHandler):
             else:
                 #On récupère la recherche de l'utilisateur
                 motRechercher = self.path[9::]
-                motRechercher = motRechercher.replace("+", " ")
+                motRechercher = motRechercher.replace('+', " ")
                 print("Le mot recherché est : \"", motRechercher, "\"")
 
                 start = time.time()
