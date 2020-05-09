@@ -27,7 +27,6 @@ class Index_reverse :
         requete = requete.split()
         #On recherche les mots proches
         mProches = []
-        print(d.index)
         mProches = find_word(requete)
         #liste de page (0:url et 1:contenue) ou notre mot apparait
         reverseContenu=[]
