@@ -31,7 +31,9 @@ class Data :
             #on remplace par des espace lescaracteres de separation (dates, ...)
             contenu = re.sub('\/|\-', " ", contenu)
             #on supprime les ponctuation et texte inutile
-            contenu = re.sub('\.|\(|\)|\_|\,|\;|\:|\&|\!|\?|[a-z]+\@[a-z]+|https?[a-z]*', "", contenu)
+            # contenu = re.sub('\W', "", contenu)
+            contenu = re.sub('\'|\`|\=|\"|\[|\]|\+|\.|\(|\)|\_|\,|\;|\:|\&|\!|\?|[a-z]+\@[a-z]+|https?[a-z]*|[0-9]*[a-z]*\=[0-9]*', "", contenu)
+            # contenu = contenu.decode('utf-8','ignore').encode("utf-8")
             contenu = ' '.join(contenu.split())
             self.index.append([nomFichier,contenu, 0])
             fichier.close()
@@ -46,14 +48,14 @@ class Data :
         cmpt = 0
         # on definit la valeur max pour hamming qu'on accepte
         # En francais un mot fait 5 lettres en moyenne,
-        # donc pour comparer les ~40 premiers mots on fait un max de 200
-        maxh = 200
+        # donc pour comparer les ~20 premiers mots on fait un max de 120
+        maxh = 120
         #notre bar de progression
         bar = Bar('Analyse des pages :', max=(len(self.index)))
         for i in range(0,len(self.index)):
             bar.next()
             for j in range(i+1,len(self.index)):
-                if (dist_hamming(self.index[i][0], self.index[j][0]) < 15) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
+                if (dist_hamming(self.index[i][0], self.index[j][0]) < 6) and (self.index[i][2] < 3) and (self.index[j][2] < 3):
                     if (dist_hamming(self.index[i][1], self.index[j][1]) < maxh):
                         cmpt += 1
                         # Si c'est la premiere fois qu'on a cette page, on la met dans les page similaires

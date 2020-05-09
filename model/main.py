@@ -12,3 +12,5 @@ start = time.time()
 index_inverse = Index_reverse(data.index)
 # print(index_inverse.reverse[0])
 print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
+
+print(index_inverse.reverse['a'])

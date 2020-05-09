@@ -8,7 +8,7 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web150"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
     data = Data(repertoire)
 
@@ -16,6 +16,12 @@ class Serv(BaseHTTPRequestHandler):
     index_inverse = Index_reverse(data.index)
     # print(index_inverse.reverse[0])
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
+
+    # filehandle = open('dictionnaire.txt', 'w')
+    # for i  in range(0,len(index_inverse.reverse), 2):
+    #     print(index_inverse.reverse[i])
+    #     filehandle.write(index_inverse.reverse[i] + '\n')
+    # filehandle.close()
 
     #function qui gere les requetes GET
     def do_GET(self):
@@ -32,8 +38,10 @@ class Serv(BaseHTTPRequestHandler):
                 motRechercher = motRechercher.replace("+", " ")
                 print("Le mot recherché est : \"", motRechercher, "\"")
 
+                start = time.time()
                 meilleur = self.index_inverse.recherche(motRechercher, self.data)
                 print ("Il y a", len(meilleur), "pages pour cette recherche")
+                print("temps prit pour la recherche  :" + str((time.time()-start)/60) + " min \n")
 
                 #On copie le fichier modele Bbis pour lui ajouter les résulats
                 shutil.copy("View/Bbis.html", "View/B.html")

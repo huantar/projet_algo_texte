@@ -7,21 +7,20 @@ class Index_reverse :
         - reverse (qui contient l'occurences des mots par pages)
         """
 
-    #constructeur de la classe index reserve
+     #constructeur de la classe index reserve
     def __init__(self,index):
-        # reverse est de la formze : [mots,[url1,url2,...],mot2,[url1,..url]...]
-        self.reverse=[]
+        self.reverse={}
         #on enleve les doublons du contenu de chaque page avec split et on met la liste renvoyé à mots
         for i in range(len(index)):
             index[i][1]=index[i][1].split()
             mots=[]
             mots.extend(list(dict.fromkeys(index[i][1])))
             for k in range(len(mots)):
-                if mots[k] in self.reverse:
-                    self.reverse[self.reverse.index(mots[k])+1].append(index[i][0])
+                if bool(self.reverse.get(mots[k])):
+                    self.reverse[mots[k]].append(index[i][0])
                 else:
-                    self.reverse.append(mots[k])
-                    self.reverse.append([index[i][0]])
+                    self.reverse[mots[k]]=[index[i][0]]
+
 
     # Ancien constructeur de la classe index reserve
     # def __init__(self,index):
@@ -54,13 +53,10 @@ class Index_reverse :
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
         for i in range(len(mProches)):
-            if mProches[i] in self.reverse:
-                #on retrouve la case du mot dans reverse et on ajoute 1 pour ca case d'urls
-                indice=(self.reverse.index(mProches[i]))+1
+            if bool(self.reverse.get(mProches[i])):
                 #on évite de mettre 2 fois la même page pour le calcul
-                for k in range(len(self.reverse[indice])):
-                    if self.reverse[indice][k] not in reverseContenu :
-                        reverseContenu.append(self.reverse[indice][k])
+                reverseContenu.extend(self.reverse[mProches[i]])
+                reverseContenu = list(dict.fromkeys(reverseContenu))
         #on remplace les url par le contenu des pages
         for url in reverseContenu:
             for page in d.index :
