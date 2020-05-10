@@ -1,15 +1,16 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from os import curdir, sep
+import os
 import re
 import shutil
 from model.loadIndex import *
 from model.Index_reverse import *
 import winsound
+from sys import platform
 
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web150"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web"
     data = Data(repertoire)
 
@@ -18,8 +19,10 @@ class Serv(BaseHTTPRequestHandler):
     # print(index_inverse.reverse[0])
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
 
-
-    winsound.PlaySound("son", winsound.SND_FILENAME)
+    if platform == "win32":
+        winsound.PlaySound("son", winsound.SND_FILENAME)
+    if platform == "linux" or platform == "linux2":
+        os.system("aplay son.wav&")
 
     #function qui gere les requetes GET
     def do_GET(self):
