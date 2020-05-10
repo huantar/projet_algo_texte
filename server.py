@@ -4,11 +4,12 @@ import re
 import shutil
 from model.loadIndex import *
 from model.Index_reverse import *
+import winsound
 
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web"
+    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web500"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web"
     data = Data(repertoire)
 
@@ -17,11 +18,8 @@ class Serv(BaseHTTPRequestHandler):
     # print(index_inverse.reverse[0])
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
 
-    # filehandle = open('dictionnaire.txt', 'w')
-    # for i  in range(0,len(index_inverse.reverse), 2):
-    #     print(index_inverse.reverse[i])
-    #     filehandle.write(index_inverse.reverse[i] + '\n')
-    # filehandle.close()
+
+    winsound.PlaySound("son", winsound.SND_FILENAME)
 
     #function qui gere les requetes GET
     def do_GET(self):
