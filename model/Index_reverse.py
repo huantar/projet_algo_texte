@@ -54,13 +54,12 @@ class Index_reverse :
         requete = requete.split()
         #On recherche les mots proches
         mProches = []
-<<<<<<< HEAD
+
         start = time.time()
         mProches = self.find_word(requete)
         print("temps prit pour le findword:" + str((time.time()-start)/60) + " min \n")
-=======
-        mProches = find_word(requete)
->>>>>>> 6d19719a9032c0624b245cf571eb0c85c829a46f
+
+
         #liste de page (0:url et 1:contenue) ou notre mot apparait
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse

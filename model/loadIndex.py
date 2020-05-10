@@ -15,8 +15,8 @@ class Data :
         start = time.time()
         self.loadIndex(repertoire)
         print("on a un index de taille :" + str(len(self.index)))
-        self.distance_pages()
-        self.clean_index()
+        # self.distance_pages()
+        # self.clean_index()
         print("temps prit pour l'initialisation :" + str((time.time()-start)/60) + " min \n")
 
     #charge données dans index
