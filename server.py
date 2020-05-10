@@ -15,9 +15,9 @@ class Serv(BaseHTTPRequestHandler):
 
     start = time.time()
     index_inverse = Index_reverse(data.index)
-    # print(index_inverse.reverse[0])
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
 
+    # Lorsque le serveur est pret on joue une musique, adaptée pour windows et linux
     if platform == "win32":
         import winsound
         winsound.PlaySound("son", winsound.SND_FILENAME)
@@ -27,12 +27,16 @@ class Serv(BaseHTTPRequestHandler):
     #function qui gere les requetes GET
     def do_GET(self):
         #Redirection des pages selon l'url
+        # S'il demande l'index on renvoit la page A
         if self.path == '/':
             self.path = "/view/A.html"
+        # Sinon il s'agit d'une requete
         if "?" in self.path:
+            # Si la requete est vide on renvoit la page A
             pattern = re.compile("(/\?search=?\+*$)")
             if pattern.match(self.path):
                 self.path= "/view/A.html"
+            # Sinon on renvoit la page B
             else:
                 #On récupère la recherche de l'utilisateur
                 motRechercher = self.path[9::]
@@ -40,6 +44,7 @@ class Serv(BaseHTTPRequestHandler):
                 print("Le mot recherché est : \"", motRechercher, "\"")
 
                 start = time.time()
+                # On lance la recherche des pages correspondante a la recherche
                 meilleur = self.index_inverse.recherche(motRechercher, self.data)
                 print ("Il y a", len(meilleur), "pages pour cette recherche")
                 print("temps prit pour la recherche  :" + str((time.time()-start)/60) + " min \n")
@@ -75,7 +80,6 @@ class Serv(BaseHTTPRequestHandler):
         try:
             #Check the file extension required and
             #set the right mime type
-
             sendReply = False
             if self.path.endswith(".html"):
                 mimetype='text/html'
@@ -106,11 +110,9 @@ class Serv(BaseHTTPRequestHandler):
                 f.close()
             return
 
-
         except IOError:
             self.send_error(404,'File Not Found: %s' % self.path)
 
-
-
+# on initilise le serveur sur un port et on lui de reseter active en permanence
 httpd = HTTPServer(('localhost', 8080), Serv)
 httpd.serve_forever()
