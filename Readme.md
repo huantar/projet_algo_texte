@@ -12,8 +12,8 @@
 - `pip install bs4` (utilisé pour supprimer le html et l'indentation des pages)
 
 # Lancement
-<ul>
-<li style="text-align:justify";>Pour lancer le serveur, vous devez spécifier le répertoire des pages web. Allez dans le fichier _server.py_ et remplacez la valeur de la variable _repertoire_ a la ligne 12 par le chemin du répertoire contenant vos pages web. Si vous êtes sous windows vous devez écrire le chemin avec des `\\` a la place des `\`. </li> </ul>
+
+- Pour lancer le serveur, vous devez spécifier le répertoire des pages web. Allez dans le fichier _server.py_ et remplacez la valeur de la variable _repertoire_ a la ligne 12 par le chemin du répertoire contenant vos pages web. Si vous êtes sous windows vous devez écrire le chemin avec des `\\` a la place des `\`.
 
 - Ensuite placez vous dans le répertoire principal du projet et faites `python server.py` pour lancer le fichier server.py.
 
