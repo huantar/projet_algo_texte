@@ -13,5 +13,6 @@
 
 # Lancement
 
-- Pour lancer le serveur on fait `python server.py`
+- Pour lancer le serveur, vous devez vous placer dans le repertoire principal et faire `python server.py`
+- Une fois le serveur pret un son vous previendra alors n'hesitez pas a prendre un café
 - Ensuite sur navigateur web, on peut acceder au site sur `localhost:8080`
