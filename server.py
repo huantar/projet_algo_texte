@@ -8,8 +8,7 @@ from model.Index_reverse import *
 class Serv(BaseHTTPRequestHandler):
 
     # on initialise le serveur en creant un index
-    repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web1"
-    # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web2"
+    repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web"
     data = Data(repertoire)
 
     start = time.time()
@@ -49,20 +48,21 @@ class Serv(BaseHTTPRequestHandler):
                 #On ouvre le fichier où l'on va afficher les pages
                 file = open("View/B.html","a")
                 #On initialise la variable que l'on va insérer dans le fichier B
-                message='<div class="row>"<h2 class="">Recherche : ' + motRechercher + '</h2>'
-                message = '<h2 class="">Pages correspondantes : ' + str(len(meilleur)) + '</h2></div>'
+                message = '<div class="row"><h2 class="">Recherche : ' + motRechercher + '</h2></div>'
+                message = message + '<div class="row"><h2 class="">Pages correspondantes : ' + str(len(meilleur)) + '</h2></div>'
                 #Si le tableau ne contient aucune page, alors il n'y a pas de résultat
                 if len(meilleur)==0:
                     message = message + '<h4>Aucune page ne correspond a votre recherche</h4>'
                 else:
+                    message = message + '<ul class="list-group list-group-flush">'
                     #Si il y a des résultats, alors on va concaténer les 10 premiers  à la variable message
                     if len(meilleur) <= 10 :
                         for j in meilleur:
-                            message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ j + '">' + j + '</h2> </div>'
+                            message = message + '<li class="col-5 mt-2 p-2 col-12 list-group-item"> <h4><a href="'+ j + '">' + j + '</a></h4> </li>'
                     else:
                         for j in range(10):
-                            message = message + '<div class="grid col-5 mt-2 p-2"> <h2><a href="'+ meilleur[j] + '">' + meilleur[j] + '</h2> </div>'
-
+                            message = message + '<li class="col-5 mt-2 p-2 col-12 list-group-item"> <h4><a href="'+ meilleur[j] + '">' + meilleur[j] + '</a></h4> </li>'
+                        message = message + '</ul>'
                 message = message + '</div></div></body></html>'
                 #On écrit la variable message à la fin du fichier B
                 file.write(message)

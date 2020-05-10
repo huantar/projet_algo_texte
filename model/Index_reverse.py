@@ -1,4 +1,6 @@
 from model.calculScore import *
+import time
+from model.distancePage import *
 
 class Index_reverse :
     """ Répertorie les mots de l'index selon les pages où ils se trouvent et leur occurence dans ces pages.
@@ -22,13 +24,39 @@ class Index_reverse :
                 else:
                     self.reverse[mots[k]]=[url]
 
-    #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
+    def find_word(self, requete):
+        word_same=[]
+        dictionnaireMots= list(self.reverse.keys())
+        requete = list(dict.fromkeys(requete))
+        for mot in requete :
+            for motSim in requete :
+                if motSim.isdigit():
+                    word_same.append(motSim)
+                    requete.remove(motSim)
+                else :
+                    if dist_hamming(mot,motSim) < 3 and len(motSim)-1 <= len(mot)  <= len(motSim)+1 :
+                        word_same.append(motSim)
+                        requete.remove(motSim)
+        #si on cherche un chiffre alors on ne fait pas hamming
+        for mot in dictionnaireMots :
+            for motReq in requete :
+                if motReq.isdigit():
+                    word_same.append(motReq)
+                else :
+                    if dist_hamming(mot,motReq) < 3 and len(motReq)-1 <= len(mot)  <= len(motReq)+1 :
+                        word_same.append(mot)
+        #print("voici la liste des mots trouver : " + str(self.word_same))
+        return list(dict.fromkeys(word_same))
+
+
+        #prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
     def recherche(self, requete, d):
         requete = requete.split()
         #On recherche les mots proches
         mProches = []
-        print(d.index)
-        mProches = find_word(requete)
+        start = time.time()
+        mProches = self.find_word(requete)
+        print("temps prit pour le findword:" + str((time.time()-start)/60) + " min \n")
         #liste de page (0:url et 1:contenue) ou notre mot apparait
         reverseContenu=[]
         #on cherche les mots de la requete dans l'index inverse
@@ -42,9 +70,12 @@ class Index_reverse :
             if bool(d.index.get(url)):
                 reverseContenu[reverseContenu.index(url)] =[url,  d.index[url][0]]
 
+        start = time.time()
         #tableau des scores avec leurs urls triées
         if len(reverseContenu) > 0:
             score=calculScore25(requete,reverseContenu)
+
+        print("temps prit pour score:" + str((time.time()-start)/60) + " min \n")
         # print(score)
         bestPages=[]
         if not(reverseContenu):

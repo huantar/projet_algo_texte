@@ -72,19 +72,3 @@ class Data :
         for url in self.list_same :
             self.index.pop(url)
         print("Aprés  suppression on a : " + str(len(self.index)) + " pages dans l'index")
-
-    def find_word(self, requete):
-        #print(self.index)
-        word_same=[]
-        #si on cherche un chiffre alors on ne fait pas hamming
-        for url, page in self.index.items() :
-            txt = page[0]
-            for mot in txt :
-                for motReq in requete :
-                    if motReq.isdigit():
-                        word_same.append(motReq)
-                    else :
-                        if dist_hamming(mot,motReq) < wt/2 and wt-1 <= len(mot)  <= wt+1 :
-                            word_same.append(mot)
-        #print("voici la liste des mots trouver : " + str(self.word_same))
-        return word_same
