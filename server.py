@@ -4,7 +4,6 @@ import re
 import shutil
 from model.loadIndex import *
 from model.Index_reverse import *
-import winsound
 from sys import platform
 
 class Serv(BaseHTTPRequestHandler):
@@ -20,6 +19,7 @@ class Serv(BaseHTTPRequestHandler):
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
 
     if platform == "win32":
+        import winsound
         winsound.PlaySound("son", winsound.SND_FILENAME)
     if platform == "linux" or platform == "linux2":
         os.system("aplay son.wav&")
