@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from os import curdir, sep
+import os
 import re
 import shutil
 from model.loadIndex import *
