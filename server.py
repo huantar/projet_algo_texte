@@ -8,6 +8,11 @@ from model.Index_reverse import *
 from sys import platform
 
 class Serv(BaseHTTPRequestHandler):
+    """
+    La classe serveur met en place notre serveur. Ses parametres de classe sont :
+        - data qui est une instance de la classe Data
+        - index_inverse qui est une instance de la classe Index_reverse
+    """
     # on initialise le serveur en creant un index
     repertoire="D:\\Users\\Tomasz\\Documents\\mes_doc\\master\\data\\pages_web150"
     # repertoire="C:\\Users\\mathi\\OneDrive\\Bureau\\pages_web"
@@ -17,7 +22,7 @@ class Serv(BaseHTTPRequestHandler):
     index_inverse = Index_reverse(data.index)
     print("temps prit pour le reverse  :" + str((time.time()-start)/60) + " min \n")
 
-    # Lorsque le serveur est pret on joue une musique, adaptée pour windows et linux
+    # Lorsque le serveur est pret on joue une notification sonore, adaptée pour windows et linux
     if platform == "win32":
         import winsound
         winsound.PlaySound("son", winsound.SND_FILENAME)

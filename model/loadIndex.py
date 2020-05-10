@@ -6,6 +6,11 @@ from model.distancePage import *
 import time
 
 class Data :
+    """
+    La classe Data représente nos données "brutes". Ses parametres sont :
+        - index qui charge les pages web
+        - list_same contient les pages trop proches
+    """
 
     index = {}
     list_same = []

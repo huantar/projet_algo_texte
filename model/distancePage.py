@@ -2,6 +2,7 @@
 # car aprés plusieurs test c'etait l'algo le plus rapide
 
 ######## hamming ########
+# Calcule la distance de hamming entre deux string et retourne sa valeur
 def dist_hamming(m1,m2):
     d = 0
     for a,b in zip(m1,m2):
@@ -10,11 +11,13 @@ def dist_hamming(m1,m2):
     return d
 
 ######## levenshtein ########
+# Calcule la distance de levenshtein entre deux string et retourne sa valeur
 def lev(a, b):
     if not a: return len(b)
     if not b: return len(a)
     return min(lev(a[1:], b[1:])+(a[0] != b[0]), lev(a[1:], b)+1, lev(a, b[1:])+1)
 
+# Calcule la distance de levenshtein entre deux string et retourne sa valeur
 def levenshtein(s, t):
         if s == t: return 0
         elif len(s) == 0: return len(t)

@@ -5,31 +5,36 @@ from model.distancePage import *
 class Index_reverse :
     """ Répertorie les mots de l'index selon les pages où ils se trouvent et leur occurence dans ces pages.
         Cette classe à pour paramètres :
-        - mots dictionnaire de mots
-        - reverse (qui contient l'occurences des mots par pages)
+        - reverse (dictionnaire de mots avec les pages correspondantes)
         """
 
-     # Constructeur de la classe index reserve
+     # Création du reverse dans le constructeur (on récupere le nombre d'url chargée de l'index avec len())
     def __init__(self,index):
         self.reverse = {}
-        # On enleve les doublons du contenu de chaque page avec split et on met la liste renvoyé à mots
+        # On parcours l'index page par page pour génerer le reverse
         for url, contenu in index.items():
+            # On transforme le contenu des pages en tableau de mots
             contenu[0] = contenu[0].split()
             mots = []
+            # On enléve les doublons de la page et on les range dans le tableau mots avec extend
             mots.extend(list(dict.fromkeys(contenu[0])))
+            # On va remplir le reverse avec les mots et les urls des pages de l'index
             for k in range(len(mots)):
+                # On verifie si le mot est deja dans le reverse
                 if bool(self.reverse.get(mots[k])):
                     self.reverse[mots[k]].append(url)
                 else:
                     self.reverse[mots[k]]=[url]
 
-    # Function qui return la liste des mots proches d'une liste de mots
+    # Function qui return la liste des mots simialires d'une requete dans word_same
     def find_word(self, requete):
         word_same=[]
         dictionnaireMots= list(self.reverse.keys())
         requete = list(dict.fromkeys(requete))
+        # On enléve les doublons et mots similaires de la requete
         for mot in requete :
             for motSim in requete :
+                #si on cherche un chiffre alors on ne fait pas hamming
                 if motSim.isdigit():
                     word_same.append(motSim)
                     requete.remove(motSim)
@@ -37,19 +42,19 @@ class Index_reverse :
                     if dist_hamming(mot,motSim) < 3 and len(motSim)-1 <= len(mot)  <= len(motSim)+1 :
                         word_same.append(motSim)
                         requete.remove(motSim)
-        #si on cherche un chiffre alors on ne fait pas hamming
+        # On cherche les mots similaires de la requete dans le dictionnaire
         for mot in dictionnaireMots :
             for motReq in requete :
+                #si on cherche un chiffre alors on ne fait pas hamming
                 if motReq.isdigit():
                     word_same.append(motReq)
                 else :
                     if dist_hamming(mot,motReq) < 3 and len(motReq)-1 <= len(mot)  <= len(motReq)+1 :
                         word_same.append(mot)
-        #print("voici la liste des mots trouver : " + str(self.word_same))
         return list(dict.fromkeys(word_same))
 
 
-    # Prend en paramètre une requète et renvoie les 10 meilleurs pages correspondantes
+    # Prend en paramètre une requète et l'index pour renvoyer les 10 meilleurs pages correspondantes
     def recherche(self, requete, d):
         # On recupere une liste de mots de la requete
         requete = requete.split()
@@ -59,7 +64,7 @@ class Index_reverse :
         mProches = self.find_word(requete)
         print("temps prit pour le findword:" + str((time.time()-start)/60) + " min \n")
 
-        #liste de page (0:url et 1:contenue) ou notre mot apparait
+        # reverseContenu contient la liste des pages ou notre mot apparait avec leur contenu 
         reverseContenu=[]
         # On cherche les mots de la requete dans l'index inverse
         for i in range(len(mProches)):
@@ -78,7 +83,7 @@ class Index_reverse :
         if len(reverseContenu) > 0:
             score=calculScore25(requete,reverseContenu)
         print("temps prit pour score:" + str((time.time()-start)/60) + " min \n")
-        
+
         bestPages=[]
         if not(reverseContenu):
             return bestPages
