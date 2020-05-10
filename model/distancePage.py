@@ -1,4 +1,4 @@
-# Nousa vons decide d'utiliser la distance de hamming,
+# Nous avons decide d'utiliser la distance de hamming,
 # car aprés plusieurs test c'etait l'algo le plus rapide
 
 ######## hamming ########
